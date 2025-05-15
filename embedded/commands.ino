@@ -1,16 +1,32 @@
-#define pin_name(led) pin_number(5)         //بنعرف رقم البين الي هنوصلها بالاردوينو
-pinMode(pin_name,state(INPUT OUTPUT));      //بنعرف البين انبوت ولا اوتبوت
-digitalRead(pin_name);                      //بنقرء القراية من علي البين
-digitalWrite(pin_name,HIGH LOW);            //بنكتب علي البين
-analogRead(pin_name);                       //بيقرء الاشارة الانالوج من علي البين
-
-
-void setup() {
-  // put your setup code here, to run once:
-
+#define pin_name(led) pin_number(5)                                     //بنعرف رقم البين الي هنوصلها بالاردوينو
+pinMode(pin_name,state(INPUT OUTPUT));                                  //بنعرف البين انبوت ولا اوتبوت
+digitalRead(pin_name);                                                  //بنقرء القراية من علي البين
+digitalWrite(pin_name,HIGH LOW);                                        //بنكتب علي البين
+analogRead(pin_name);                                                   //بيقرء الاشارة الانالوج من علي البين
+////////////////////////////////////////////UART//////////////////////////////////////////
+Serial.begin(9600);                                                     //بنشغل بريفرال و بنظبط التردد علي 9600 
+if (Serial.available())                                                 //علشان يتاكد ان الجهاز فعلا متوصل
+{
 }
+Serial.print("I received: ");                                           //بنبعت رسالة و اي حاجة هتتبعت هتكمل بعدها
+Serial.println("I received: ");                                         //بنبعت رسالة و بينزل سطر بعدها
+Serial.read();                                                          //بنقرء الرسالة الي بتجيلي من اي جهاز تاني
+////////////////////////////////////////////SPI///////////////////////////////////////////
+#include<SPI.h>                                                         //لازم نكتب السطر ده علشان نعرف نشتغل
+SPI.begin();                                                            //بنشغل البريفرال
+SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE0));       //بنبدء عملية التحويل و بناخده كوبي زي مهو
+SPI.transfer(val);                                                      //بنبعت قيمة و بنستقبل قيمة في نفس اللحظة
+SPI.endTransaction();                                                   //بننهي عملية التحويل
+SPI.end();                                                              //بنقفل البريفرال
+////////////////////////////////////////////I2C///////////////////////////////////////////
+#include <Wire.h>                                                       //لازم نكتب السطر ده علشان نعرف نشتغل
+Wire.begin();;                                                          //بنشغل البريفرال
+Wire.begin(address);;                                                   //بنشغل البريفرال في حالة انه عبد و بنكتب الادريس بتاعنا في الشبكة
+Wire.available();                                                       //علشان يتاكد ان الجهاز فعلا متوصل
+Wire.beginTransmission(address);                                        //بنبدء عملية التحويل و بكتب عنوان العبد الي هتبعتله
+Wire.write(value);                                                      //بنبعت قيمة
+Wire.requestFrom(address,1);                                            //بنبدء عملية التحويل و بكتب عنوان العبد الي هستقبل منه
+Wire.read();                                                            //بنقرء قيمة
+Wire.endTransmission();                                                 //بننهي عملية التحويل
+Wire.end();                                                             //بنقفل البريفرال
 
-void loop() {
-  // put your main code here, to run repeatedly:
-
-}
